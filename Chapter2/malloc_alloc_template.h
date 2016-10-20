@@ -14,12 +14,20 @@
 #	define __THROW_BAD_ALLOC std::cerr << "out of memory" << std::endl; exit(1)
 #endif
 
+#include <cstdlib>
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::hex;
+using std::dec;
+
 template <int inst>
 class __malloc_alloc_template
 {
 public:
 	static void * allocate(size_t n)
 	{
+		cout << "====== malloc_alloc::allocate(" << n << ") MB ======" << endl;
 		void *result = malloc(n);
 		// result = 0;		/* test code */
 		// malloc failed, call oom_malloc()
@@ -31,6 +39,7 @@ public:
 
 	static void deallocate(void *p, size_t n = 0/* n */)
 	{
+		cout << "====== malloc_alloc::deallocate(" << hex << p << dec << ", " << n << ") ======" << endl;
 		free(p);
 	}
 
