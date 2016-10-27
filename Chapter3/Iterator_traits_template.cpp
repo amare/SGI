@@ -32,13 +32,13 @@ int main()
 
 	int num = 6;
 	int *ptr = &num;
-	func<int *>(ptr);
+	func(ptr);
 
 	const char str = 'c';
-	func<const char *>(&str);
+	func(&str);
 
 	MyIter<const char> myiter(&str);
-	func<MyIter<const char>>(myiter);
+	func(myiter);
 
 	return 0;
 }
