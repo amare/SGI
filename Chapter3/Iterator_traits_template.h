@@ -99,3 +99,10 @@ inline void advance(InputIterator &i, Distance n)
 {
 	_advance(i, n, iterator_traits<InputIterator>::iterator_category());
 }
+
+template <class Iterator>
+inline typename iterator_traits<Iterator>::value_type*
+value_type(const Iterator&)
+{
+	return static_cast<typename iterator_traits<Iterator>::value_type*>(0);
+}
