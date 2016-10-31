@@ -6,11 +6,11 @@
 // @note
 //
 
-#ifndef SGI_CHAPTER4_MY_CONSTRUCT_H_
-#define SGI_CHAPTER4_MY_CONSTRUCT_H_
+#ifndef SGI_CHAPTER2_MY_CONSTRUCT_H_
+#define SGI_CHAPTER2_MY_CONSTRUCT_H_
 
 #include "Chapter3/iterator_traits_template.h"
-#include "my_type_traits.h"
+#include "Chapter3/my_type_traits.h"
 
 #include <new>
 
