@@ -9,6 +9,8 @@
 #ifndef DEFAULT_MALLOC_TEMPLATE_H
 #define DEFAULT_MALLOC_TEMPLATE_H
 
+// #define DEBUG
+
 #include "malloc_alloc_template.h"
 #include <iostream>
 using std::cout;
@@ -77,7 +79,9 @@ __default_malloc_template<threads, inst>::free_list[__NFREELISTS] =
 template <bool threads, int inst>
 void * __default_malloc_template<threads, inst>::allocate(size_t n)
 {
+	#ifdef DEBUG
 	cout << "====== default_malloc::allocate(" << n << ") MB ======" << endl;
+	#endif
 	obj * volatile * my_free_list;
 	obj * result;
 
@@ -91,18 +95,25 @@ void * __default_malloc_template<threads, inst>::allocate(size_t n)
 	if(0 == result)
 	{
 		void *ret = refill(ROUND_UP(n));
+		#ifdef DEBUG
 		outputFreeList();
+		#endif
 		return ret;
 	}
 
 	*my_free_list = result->free_list_link;
+	#ifdef DEBUG
+	outputFreeList();
+	#endif
 	return result;
 }
 
 template <bool threads, int inst>
 void __default_malloc_template<threads, inst>::deallocate(void *p, size_t n)
 {
+	#ifdef DEBUG
 	cout << "====== default_malloc::deallocate() ======" << endl;
+	#endif
 	if(n > (size_t)__MAX_BYTES)
 	{
 		__malloc_alloc_template<inst>::deallocate(p, n);
@@ -114,13 +125,17 @@ void __default_malloc_template<threads, inst>::deallocate(void *p, size_t n)
 	q->free_list_link = *my_free_list;
 	*my_free_list = q;
 
+	#ifdef DEBUG
 	outputFreeList();
+	#endif
 }
 
 template <bool threads, int inst>
 void * __default_malloc_template<threads, inst>::refill(size_t n)
 {
+	#ifdef DEBUG
 	cout << "====== refill(" << n << ") ======" << endl;
+	#endif
 	int nobjs = 20;
 	char *chunk = chunk_alloc(n, nobjs);
 
@@ -159,7 +174,9 @@ void * __default_malloc_template<threads, inst>::refill(size_t n)
 template <bool threads, int inst>
 char * __default_malloc_template<threads, inst>::chunk_alloc(size_t size, int &nobjs)
 {
+	#ifdef DEBUG
 	cout << "====== chunk_alloc(" << size << ", " << nobjs << ") ======" << endl;
+	#endif
 	char * result;
 	size_t bytes_left = end_free - start_free;
 	size_t total_bytes = size * nobjs;
