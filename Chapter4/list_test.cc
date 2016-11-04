@@ -54,5 +54,24 @@ int main()
 		cout << *iter << " ";
 	cout << endl;
 
+	int iv[5] = { 5, 6, 7, 8, 9};
+	list<int> ilst2(iv, iv+5);
+
+	iter = find(ilist.begin(), ilist.end(), 99);
+	ilist.splice(iter, ilst2);
+	for(iter = ilist.begin(); iter != ilist.end(); ++iter)
+		cout << *iter << " ";
+	cout << endl;
+
+	ilist.reverse();
+	for(iter = ilist.begin(); iter != ilist.end(); ++iter)
+		cout << *iter << " ";
+	cout << endl;
+
+	ilist.sort();
+	for(iter = ilist.begin(); iter != ilist.end(); ++iter)
+		cout << *iter << " ";
+	cout << endl;
+
 	return 0;
 }
