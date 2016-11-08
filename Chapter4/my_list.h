@@ -9,6 +9,8 @@
 #ifndef SGI_CHAPTER4_MY_LIST_H_
 #define SGI_CHAPTER4_MY_LIST_H_
 
+#define GPS_DEBUG 0_
+
 
 #include <cstddef>		// for ptrdiff_t, size_t
 #include <bits/stl_iterator_base_types.h>		// for std::bidirectional_iterator_tag
@@ -187,7 +189,9 @@ public:
 
 	void clear()
 	{
+	#if GPS_DEBUG_
 		cout << "====== call clear() =======" << endl;
+	#endif
 		list_node_ptr cur = blank_node->next;
 		list_node_ptr temp;
 		while(cur != blank_node)
@@ -203,7 +207,9 @@ public:
 
 	void remove(const T& x)
 	{
+	#if GPS_DEBUG_
 		cout << "====== call remove(" << x << ") ======" << endl;
+	#endif
 		iterator first = begin();
 		iterator last = end();
 		iterator temp;
@@ -218,7 +224,9 @@ public:
 
 	iterator insert(iterator position, const T& x)
 	{
+	#if GPS_DEBUG_
 		cout << "====== call insert() ======" << endl;
+	#endif
 		list_node_ptr temp = create_node(x);
 		temp->next = position.node_;
 		temp->prev = position.node_->prev;
@@ -348,16 +356,53 @@ void MyList<T, Alloc>::sort()
 	{
 		carry.splice(carry.begin(), *this, begin());
 		int i = 0;
+	#if GPS_DEBUG_
+		cout << "=========================" << endl;
+		cout << "fill: " << fill << endl;
+	#endif
 		while(i < fill && !counter[i].empty())
 		{
+		#if GPS_DEBUG_
+			cout << "counter[" << i << "]: ";
+			for(auto iter = counter[i].begin(); iter != counter[i].end(); ++iter)
+				cout << *iter << " ";
+			cout << endl;
+		#endif
+
 			counter[i].merge(carry);
+
+		#if GPS_DEBUG_
+			cout << "counter[" << i << "]: ";
+			for(auto iter = counter[i].begin(); iter != counter[i].end(); ++iter)
+				cout << *iter << " ";
+			cout << endl;
+		#endif
+
 			carry.swap(counter[i]);
+
+		#if GPS_DEBUG_
+			cout << "counter[" << i << "]: ";
+			for(auto iter = counter[i].begin(); iter != counter[i].end(); ++iter)
+				cout << *iter << " ";
+			cout << endl;
+		#endif
+
 			i++;
 		}
 		carry.swap(counter[i]);
+
+	#if GPS_DEBUG_
+		cout << "counter[" << i << "]: ";
+		for(auto iter = counter[i].begin(); iter != counter[i].end(); ++iter)
+			cout << *iter << " ";
+		cout << endl;
+	#endif
+
 		if(i == fill) ++fill;
 	}
 
+#if GPS_DEBUG_
+	cout << "========= END WHILE() ============" << endl;
 	for(int i = 0; i != 64; ++i)
 	{
 		cout << "counter[" << i << "]: ";
@@ -365,6 +410,7 @@ void MyList<T, Alloc>::sort()
 			cout << *iter << " ";
 		cout << endl;
 	}
+#endif
 	for(int i = 1; i < fill; ++i)
 		counter[i].merge(counter[i-1]);
 	swap(counter[fill-1]);

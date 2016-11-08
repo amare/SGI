@@ -82,6 +82,22 @@ int main()
 	ilst2.push_back(6);
 	ilst2.push_back(7);
 	ilst2.push_back(8);
+	ilst2.push_back(10);
+	ilst2.push_back(20);
+	ilst2.push_back(18);
+	ilst2.push_back(19);
+	ilst2.push_back(11);
+	ilst2.push_back(12);
+	ilst2.push_back(17);
+	ilst2.push_back(16);
+	ilst2.push_back(13);
+	ilst2.push_back(21);
+	ilst2.push_back(15);
+	ilst2.push_back(14);
+	ilst2.push_back(23);
+	ilst2.push_back(25);
+	ilst2.push_back(24);
+	ilst2.push_back(22);
 
 	MyList<int>::iterator iter = find(ilst.begin(), ilst.end(), 9);
 	ilst.splice(iter, ilst2);
