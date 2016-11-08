@@ -9,6 +9,8 @@
 #ifndef SGI_CHAPTER2_MY_CONSTRUCT_H_
 #define SGI_CHAPTER2_MY_CONSTRUCT_H_
 
+#define GPS_DEBUG_ 0
+
 #include "Chapter3/iterator_traits_template.h"
 #include "Chapter3/my_type_traits.h"
 

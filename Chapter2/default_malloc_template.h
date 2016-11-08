@@ -9,7 +9,7 @@
 #ifndef DEFAULT_MALLOC_TEMPLATE_H
 #define DEFAULT_MALLOC_TEMPLATE_H
 
-// #define DEBUG
+#define GPS_DEBUG_ 0
 
 #include "malloc_alloc_template.h"
 #include <iostream>
@@ -79,9 +79,9 @@ __default_malloc_template<threads, inst>::free_list[__NFREELISTS] =
 template <bool threads, int inst>
 void * __default_malloc_template<threads, inst>::allocate(size_t n)
 {
-	#ifdef DEBUG
+#if GPS_DEBUG_
 	cout << "====== default_malloc::allocate(" << n << ") MB ======" << endl;
-	#endif
+#endif
 	obj * volatile * my_free_list;
 	obj * result;
 
@@ -95,25 +95,25 @@ void * __default_malloc_template<threads, inst>::allocate(size_t n)
 	if(0 == result)
 	{
 		void *ret = refill(ROUND_UP(n));
-		#ifdef DEBUG
+	#if GPS_DEBUG_
 		outputFreeList();
-		#endif
+	#endif
 		return ret;
 	}
 
 	*my_free_list = result->free_list_link;
-	#ifdef DEBUG
+#if GPS_DEBUG_
 	outputFreeList();
-	#endif
+#endif
 	return result;
 }
 
 template <bool threads, int inst>
 void __default_malloc_template<threads, inst>::deallocate(void *p, size_t n)
 {
-	#ifdef DEBUG
+#if GPS_DEBUG_
 	cout << "====== default_malloc::deallocate() ======" << endl;
-	#endif
+#endif
 	if(n > (size_t)__MAX_BYTES)
 	{
 		__malloc_alloc_template<inst>::deallocate(p, n);
@@ -125,17 +125,17 @@ void __default_malloc_template<threads, inst>::deallocate(void *p, size_t n)
 	q->free_list_link = *my_free_list;
 	*my_free_list = q;
 
-	#ifdef DEBUG
+#if GPS_DEBUG_
 	outputFreeList();
-	#endif
+#endif
 }
 
 template <bool threads, int inst>
 void * __default_malloc_template<threads, inst>::refill(size_t n)
 {
-	#ifdef DEBUG
+#if GPS_DEBUG_
 	cout << "====== refill(" << n << ") ======" << endl;
-	#endif
+#endif
 	int nobjs = 20;
 	char *chunk = chunk_alloc(n, nobjs);
 
@@ -174,9 +174,9 @@ void * __default_malloc_template<threads, inst>::refill(size_t n)
 template <bool threads, int inst>
 char * __default_malloc_template<threads, inst>::chunk_alloc(size_t size, int &nobjs)
 {
-	#ifdef DEBUG
+#if GPS_DEBUG_
 	cout << "====== chunk_alloc(" << size << ", " << nobjs << ") ======" << endl;
-	#endif
+#endif
 	char * result;
 	size_t bytes_left = end_free - start_free;
 	size_t total_bytes = size * nobjs;
