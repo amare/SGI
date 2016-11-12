@@ -9,8 +9,6 @@
 #ifndef DEFAULT_MALLOC_TEMPLATE_H
 #define DEFAULT_MALLOC_TEMPLATE_H
 
-#define GPS_DEBUG_ 0
-
 #include "malloc_alloc_template.h"
 #include <iostream>
 using std::cout;
@@ -26,6 +24,8 @@ using std::dec;
 enum { __ALIGN = 8 };
 enum { __MAX_BYTES = 128 };
 enum { __NFREELISTS = __MAX_BYTES/__ALIGN };
+
+// #define GPS_DEBUG_
 
 template <bool threads, int inst>
 class __default_malloc_template
@@ -79,7 +79,7 @@ __default_malloc_template<threads, inst>::free_list[__NFREELISTS] =
 template <bool threads, int inst>
 void * __default_malloc_template<threads, inst>::allocate(size_t n)
 {
-#if GPS_DEBUG_
+#if defined(GPS_DEBUG_)
 	cout << "====== default_malloc::allocate(" << n << ") MB ======" << endl;
 #endif
 	obj * volatile * my_free_list;
@@ -95,14 +95,14 @@ void * __default_malloc_template<threads, inst>::allocate(size_t n)
 	if(0 == result)
 	{
 		void *ret = refill(ROUND_UP(n));
-	#if GPS_DEBUG_
+	#if defined(GPS_DEBUG_)
 		outputFreeList();
 	#endif
 		return ret;
 	}
 
 	*my_free_list = result->free_list_link;
-#if GPS_DEBUG_
+#if defined(GPS_DEBUG_)
 	outputFreeList();
 #endif
 	return result;
@@ -111,7 +111,7 @@ void * __default_malloc_template<threads, inst>::allocate(size_t n)
 template <bool threads, int inst>
 void __default_malloc_template<threads, inst>::deallocate(void *p, size_t n)
 {
-#if GPS_DEBUG_
+#if defined(GPS_DEBUG_)
 	cout << "====== default_malloc::deallocate() ======" << endl;
 #endif
 	if(n > (size_t)__MAX_BYTES)
@@ -125,7 +125,7 @@ void __default_malloc_template<threads, inst>::deallocate(void *p, size_t n)
 	q->free_list_link = *my_free_list;
 	*my_free_list = q;
 
-#if GPS_DEBUG_
+#if defined(GPS_DEBUG_)
 	outputFreeList();
 #endif
 }
@@ -133,7 +133,7 @@ void __default_malloc_template<threads, inst>::deallocate(void *p, size_t n)
 template <bool threads, int inst>
 void * __default_malloc_template<threads, inst>::refill(size_t n)
 {
-#if GPS_DEBUG_
+#if defined(GPS_DEBUG_)
 	cout << "====== refill(" << n << ") ======" << endl;
 #endif
 	int nobjs = 20;
@@ -174,7 +174,7 @@ void * __default_malloc_template<threads, inst>::refill(size_t n)
 template <bool threads, int inst>
 char * __default_malloc_template<threads, inst>::chunk_alloc(size_t size, int &nobjs)
 {
-#if GPS_DEBUG_
+#if defined(GPS_DEBUG_)
 	cout << "====== chunk_alloc(" << size << ", " << nobjs << ") ======" << endl;
 #endif
 	char * result;
