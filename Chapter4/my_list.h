@@ -9,8 +9,8 @@
 #ifndef SGI_CHAPTER4_MY_LIST_H_
 #define SGI_CHAPTER4_MY_LIST_H_
 
-#define GPS_DEBUG 0_
-
+// #define GPS_DEBUG_ 1 		//@gps: cout << GPS_DEBUG_ << endl; always print 0, don't know why.
+								//@gps: because GPS_DEBUG_ redefined to 0 in Chapter2/my_constructor.h
 
 #include <cstddef>		// for ptrdiff_t, size_t
 #include <bits/stl_iterator_base_types.h>		// for std::bidirectional_iterator_tag
@@ -22,6 +22,8 @@ using std::endl;
 
 #include "Chapter2/my_construct.h"
 #include "Chapter2/default_malloc_template.h"
+
+// #define GPS_DEBUG_				//@gps: other header file is above
 
 template <typename T>
 struct ListNode
@@ -189,7 +191,7 @@ public:
 
 	void clear()
 	{
-	#if GPS_DEBUG_
+	#if defined(GPS_DEBUG_)
 		cout << "====== call clear() =======" << endl;
 	#endif
 		list_node_ptr cur = blank_node->next;
@@ -207,7 +209,7 @@ public:
 
 	void remove(const T& x)
 	{
-	#if GPS_DEBUG_
+	#if defined(GPS_DEBUG_)
 		cout << "====== call remove(" << x << ") ======" << endl;
 	#endif
 		iterator first = begin();
@@ -224,7 +226,7 @@ public:
 
 	iterator insert(iterator position, const T& x)
 	{
-	#if GPS_DEBUG_
+	#if defined(GPS_DEBUG_)
 		cout << "====== call insert() ======" << endl;
 	#endif
 		list_node_ptr temp = create_node(x);
@@ -356,13 +358,13 @@ void MyList<T, Alloc>::sort()
 	{
 		carry.splice(carry.begin(), *this, begin());
 		int i = 0;
-	#if GPS_DEBUG_
+	#if defined(GPS_DEBUG_)
 		cout << "=========================" << endl;
 		cout << "fill: " << fill << endl;
 	#endif
 		while(i < fill && !counter[i].empty())
 		{
-		#if GPS_DEBUG_
+		#if defined(GPS_DEBUG_)
 			cout << "counter[" << i << "]: ";
 			for(auto iter = counter[i].begin(); iter != counter[i].end(); ++iter)
 				cout << *iter << " ";
@@ -371,7 +373,7 @@ void MyList<T, Alloc>::sort()
 
 			counter[i].merge(carry);
 
-		#if GPS_DEBUG_
+		#if defined(GPS_DEBUG_)
 			cout << "counter[" << i << "]: ";
 			for(auto iter = counter[i].begin(); iter != counter[i].end(); ++iter)
 				cout << *iter << " ";
@@ -380,7 +382,7 @@ void MyList<T, Alloc>::sort()
 
 			carry.swap(counter[i]);
 
-		#if GPS_DEBUG_
+		#if defined(GPS_DEBUG_)
 			cout << "counter[" << i << "]: ";
 			for(auto iter = counter[i].begin(); iter != counter[i].end(); ++iter)
 				cout << *iter << " ";
@@ -391,7 +393,7 @@ void MyList<T, Alloc>::sort()
 		}
 		carry.swap(counter[i]);
 
-	#if GPS_DEBUG_
+	#if defined(GPS_DEBUG_)
 		cout << "counter[" << i << "]: ";
 		for(auto iter = counter[i].begin(); iter != counter[i].end(); ++iter)
 			cout << *iter << " ";
@@ -401,7 +403,7 @@ void MyList<T, Alloc>::sort()
 		if(i == fill) ++fill;
 	}
 
-#if GPS_DEBUG_
+#if defined(GPS_DEBUG_)
 	cout << "========= END WHILE() ============" << endl;
 	for(int i = 0; i != 64; ++i)
 	{
