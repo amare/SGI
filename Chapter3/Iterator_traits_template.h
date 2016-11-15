@@ -106,3 +106,10 @@ value_type(const Iterator&)
 {
 	return static_cast<typename iterator_traits<Iterator>::value_type*>(0);
 }
+
+template <class Iterator>
+inline typename iterator_traits<Iterator>::difference_type*
+distance_type(const Iterator&)
+{
+	return static_cast<typename iterator_traits<Iterator>::difference_type*>(0);
+}
