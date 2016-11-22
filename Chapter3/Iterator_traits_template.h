@@ -6,6 +6,9 @@
 // @note
 //
 
+#ifndef SGI_CHAPTER3_ITERATOR_TRAITS_TEMPLATE_H_
+#define SGI_CHAPTER3_ITERATOR_TRAITS_TEMPLATE_H_
+
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -113,3 +116,5 @@ distance_type(const Iterator&)
 {
 	return static_cast<typename iterator_traits<Iterator>::difference_type*>(0);
 }
+
+#endif
