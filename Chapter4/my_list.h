@@ -22,6 +22,7 @@ using std::endl;
 
 #include "Chapter2/my_construct.h"
 #include "Chapter2/default_malloc_template.h"
+#include "Chapter8/my_iterator_adapter.h"		// @gps add 2016/11/22 19:58:04
 
 // #define GPS_DEBUG_				//@gps: other header file is above
 
@@ -128,6 +129,8 @@ class MyList
 {
 public:
 	typedef ListIterator<T> iterator;
+	typedef ReverseIterator<iterator> reverse_iterator;		// @gps add 2016/11/22 19:58:04
+
 	typedef T& reference;
 	typedef size_t size_type;
 
@@ -151,6 +154,14 @@ public:
 	iterator end()
 	{
 		return blank_node;
+	}
+	reverse_iterator rbegin()
+	{
+		return reverse_iterator(end());
+	}
+	reverse_iterator rend()
+	{
+		return reverse_iterator(begin());
 	}
 	bool empty() const
 	{
