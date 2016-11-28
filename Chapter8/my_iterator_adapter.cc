@@ -6,6 +6,10 @@
 // @note
 //
 
+#include <functional>       // for copy
+#include <vector>
+using std::vector;
+
 #include "Chapter4/my_list.h"
 
 int main()
@@ -35,6 +39,15 @@ int main()
 
     auto iter2 = MyList<int>::reverse_iterator();       // don't call copy constructor
                                                         // because rhs is a temporary object??
+
+    int ia[] = { 0, 1, 2, 3, 4, 5 };
+    vector<int> iv(ia, ia + 6);
+    OstreamIterator<int> out_iterator(cout, " ");
+    copy(iv.begin(), iv.end(), out_iterator);
+
+    IstreamIterator<int> in_iterator(cin), eos;
+    copy(in_iterator, eos, inserter(iv, iv.begin()));
+    copy(iv.begin(), iv.end(), out_iterator);
 
     return 0;
 }
